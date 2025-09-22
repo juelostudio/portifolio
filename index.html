@@ -372,7 +372,6 @@
                 });
             }
 
-
             // Lida com o clique do botão de copiar
             copyButton.addEventListener('click', () => {
                 // Atualiza o HTML com o conteúdo do formulário
@@ -387,12 +386,26 @@
                 elementsToUpdate['phone'].dataset.text = formData.get('dashboard-phone');
                 elementsToUpdate['phone'].innerHTML = `<svg class="w-5 h-5 text-indigo-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.774a11.096 11.096 0 007.82 7.82l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"></path></svg>${formData.get('dashboard-phone')}`;
                 
-                const clientsData = JSON.parse(document.getElementById('dashboard-clients').value);
-                renderClients(clientsData);
+                try {
+                    const clientsData = JSON.parse(document.getElementById('dashboard-clients').value);
+                    renderClients(clientsData);
+                } catch (e) {
+                    alert('Erro no formato JSON dos clientes. Verifique se as chaves e valores estão entre aspas duplas, e se cada objeto está separado por uma vírgula.');
+                    console.error(e);
+                    return;
+                }
+
+                try {
+                    const mockupsData = JSON.parse(document.getElementById('dashboard-mockups').value);
+                    renderMockups(mockupsData);
+                } catch (e) {
+                    alert('Erro no formato JSON dos mockups. Verifique se as chaves e valores estão entre aspas duplas, e se cada objeto está separado por uma vírgula.');
+                    console.error(e);
+                    return;
+                }
+
                 const servicesData = document.getElementById('dashboard-services').value.split('\n').filter(s => s.trim() !== '');
                 renderServices(servicesData);
-                const mockupsData = JSON.parse(document.getElementById('dashboard-mockups').value);
-                renderMockups(mockupsData);
                 
                 // Copia o código para a área de transferência
                 const htmlCode = document.documentElement.outerHTML;
